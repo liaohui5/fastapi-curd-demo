@@ -1,0 +1,14 @@
+### kulala-config
+
+@api_prefix = /api/v1
+@host = http://localhost:8000
+
+
+### ping
+
+GET {{host}} HTTP/1.1
+
+
+### Articles
+
+GET {{host}}{{api_prefix}}/articles HTTP/1.1
