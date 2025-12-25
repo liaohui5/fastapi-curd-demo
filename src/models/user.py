@@ -19,6 +19,6 @@ class UserModel(SQLModel, table=True):
     password: str = Field(..., nullable=False, max_length=128)
     avatar_url: str | None = Field(default=None, max_length=256)
     created_at: str = Field(default=datetime.now(), nullable=False)
-    updated_at: datetime | None = Field(default=None, nullable=True)
+    updated_at: str | None = Field(default=None, nullable=True)
 
     articles: list["ArticleModel"] = Relationship(back_populates="author")

@@ -11,7 +11,7 @@ GET {{host}} HTTP/1.1
 
 ### ListArticles
 
-GET {{host}}{{api_prefix}}/articles HTTP/1.1
+GET {{host}}{{api_prefix}}/articles?page=6 HTTP/1.1
 
 
 ### CreateArticles

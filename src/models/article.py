@@ -22,7 +22,7 @@ class ArticleModel(SQLModel, table=True):
     visit_count: int = Field(default=0, nullable=False)
     comment_count: int = Field(default=0, nullable=False)
     created_at: str = Field(default=datetime.now(), nullable=False)
-    updated_at: datetime | None = Field(default=None, nullable=True)
-    deleted_at: datetime | None = Field(default=None, nullable=True)
+    updated_at: str | None = Field(default=None, nullable=True)
+    deleted_at: str | None = Field(default=None, nullable=True)
 
     author: UserModel | None = Relationship(back_populates="articles")

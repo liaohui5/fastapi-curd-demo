@@ -20,20 +20,18 @@ class Curd:
         return self.build_where(query, where)
 
     async def count(self, where: dict = {}):
-        async with self.session.begin():
-            query = select(func.count(self.model.id))
-            query = self.build_where(query, where)
-            result = await self.session.exec(query)
-            return result.one()
+        query = select(func.count(self.model.id))
+        query = self.build_where(query, where)
+        result = await self.session.exec(query)
+        return result.one()
 
     async def list(self, pagination: dict[str, int], where: dict = {}):
-        async with self.session.begin():
-            offset = (pagination["page"] - 1) * pagination["limit"]
-            limit = pagination["limit"]
-            result = await self.session.exec(
-                self.build_query_where(where).offset(offset=offset).limit(limit=limit)
-            )
-            return result.all()
+        offset = (pagination["page"] - 1) * pagination["limit"]
+        limit = pagination["limit"]
+        result = await self.session.exec(
+            self.build_query_where(where).offset(offset=offset).limit(limit=limit)
+        )
+        return result.all()
 
     async def list_and_count(self, pagination: dict[str, int], where: dict = {}):
         count = await self.count(where)
@@ -44,8 +42,9 @@ class Curd:
         }
 
     async def create(self, data: Any):
-        async with self.session.begin():
-            self.session.add(data)
+        self.session.add(data)
+        await self.session.commit()
+        return True
 
     async def findById(self, id: int):
         query = select(self.model).where(self.model.id == id)
