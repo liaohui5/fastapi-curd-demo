@@ -27,7 +27,7 @@ class Config:
     REFRESH_TOKEN_SECRET = None
 
     # database
-    DB_URL = "sqlite+aiosqlite:///flask_curd.db"
+    DB_URL = "sqlite+aiosqlite:///database.db"
 
     @staticmethod
     def load_config(config_file_path: str):

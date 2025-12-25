@@ -1,5 +1,6 @@
 from sqlmodel import create_engine, Session, SQLModel
 from src.models.user import UserModel
+from src.models.article import ArticleModel
 from src.config import Config
 
 
@@ -14,4 +15,4 @@ def create_session():
     return Session(engine)
 
 
-__all__ = ["SQLModel", "UserModel", "engine", "create_session"]
+__all__ = ["SQLModel", "UserModel", "ArticleModel", "engine", "create_session"]
