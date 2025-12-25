@@ -1,8 +1,12 @@
 import sys
 import random
 from pathlib import Path
+from dotenv import dotenv_values
 
 sys.path.append(str(Path(__file__)))
+from src.config import Config
+
+Config.load_env(dotenv_values())
 
 from src.models import UserModel, ArticleModel, create_async_session
 
@@ -17,11 +21,10 @@ def create_users():
     user_list = []
     for i in range(1, users_total + 1):
         user = UserModel(
-            id=i,
             username=f"user-{i}",
             email=f"user-{i}@example.com",
             password=password_hash_str,
-        )
+        )  # pyright: ignore [reportCallIssue]
         user_list.append(user)
     return user_list
 
