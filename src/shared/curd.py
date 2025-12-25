@@ -47,33 +47,37 @@ class Curd:
         async with self.session.begin():
             self.session.add(data)
 
-    async def update(self, id: int, data: dict):
-        async with self.session.begin():
-            result = await self.session.exec(
-                self.model.update().where(self.model.id == id).values(**data)
-            )
-        return result.rowcount
+    async def findById(self, id: int):
+        query = select(self.model).where(self.model.id == id)
+        result = await self.session.exec(query)
+        return result.one()
 
-    async def delete(self, id: int):
-        async with self.session.begin():
-            data = {"deleted_at": datetime.now()}
-            result = await self.session.exec(
-                self.model.update().where(self.model.id == id).values(**data)
-            )
-            # await self.session.commit()
-        return result.rowcount
+    async def update(self, id: int, data: dict):
+        target = await self.findById(id)
+        for key, value in data.items():
+            setattr(target, key, value)
+
+        self.session.add(target)
+        await self.session.commit()
+        await self.session.refresh(target)
+        return target
+
+    async def delete(self, id: int, is_hard_delete: bool = False):
+        if is_hard_delete:
+            return await self.hard_delete(id)
+        else:
+            return await self.soft_delete(id)
+
+    async def soft_delete(self, id: int):
+        target = await self.findById(id)
+        setattr(target, "deleted_at", datetime.now())
+        self.session.add(target)
+        await self.session.commit()
+        await self.session.refresh(target)
+        return id
 
     async def hard_delete(self, id: int):
-        async with self.session.begin():
-            result = await self.session.exec(
-                self.model.delete().where(self.model.id == id)
-            )
-            # await self.session.commit()
-        return result.rowcount
-
-    async def detail(self, id: int):
-        async with self.session.begin():
-            result = await self.session.exec(
-                self.model.select().where(self.model.id == id)
-            )
-        return result.one()
+        target = await self.findById(id)
+        await self.session.delete(target)
+        await self.session.commit()
+        return id

@@ -1,11 +1,10 @@
 from src.shared.api_v1 import api_v1
 from fastapi import Path
-from src.validation.articles import CreateArticleSchema
 from src.shared.response_fmt import ResponseFmt
 from src.shared.curd import Curd
 from src.models import ArticleModel
 from src.shared.common import parse_pagination_query
-from fastapi import Depends
+from fastapi import Depends, Body
 from typing import Annotated
 
 
@@ -13,7 +12,13 @@ from typing import Annotated
 async def list_articles(
     pagination: Annotated[dict[str, int], Depends(parse_pagination_query)],
 ):
-    results = await Curd(ArticleModel).list_and_count(pagination)
+    results = await Curd(ArticleModel).list_and_count(
+        pagination,
+        {
+            # only show articles that are not deleted
+            ArticleModel.deleted_at: None
+        },
+    )
     return ResponseFmt.success(results)
 
 
@@ -24,10 +29,14 @@ async def create_article(article: ArticleModel):
 
 
 @api_v1.patch("/articles/{id}")
-async def update_article(id: int = Path(..., description="文章 id")):
-    pass
+async def update_article(
+    id: int = Path(..., description="文章 id"), data: dict = Body()
+):
+    result = await Curd(ArticleModel).update(id, data)
+    return ResponseFmt.success(result)
 
 
 @api_v1.delete("/articles/{id}")
 async def delete_article(id: int = Path(..., description="文章 id")):
-    pass
+    result = await Curd(ArticleModel).delete(id)
+    return ResponseFmt.success(result)
