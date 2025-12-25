@@ -38,7 +38,8 @@ GET {{host}}{{api_prefix}}/refresh_access_token?refreshToken={{LOGIN_REQ.respons
 
 ### ListArticles
 
-GET {{host}}{{api_prefix}}/articles?page=6 HTTP/1.1
+GET {{host}}{{api_prefix}}/articles?page=1 HTTP/1.1
+Authorization: Bearer {{LOGIN_REQ.response.body.$.data.accessToken}}
 
 
 ### CreateArticles
