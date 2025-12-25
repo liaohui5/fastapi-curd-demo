@@ -46,13 +46,13 @@ class Curd:
         await self.session.commit()
         return True
 
-    async def findById(self, id: int):
+    async def find_by_id(self, id: int):
         query = select(self.model).where(self.model.id == id)
         result = await self.session.exec(query)
         return result.one()
 
     async def update(self, id: int, data: dict):
-        target = await self.findById(id)
+        target = await self.find_by_id(id)
         for key, value in data.items():
             setattr(target, key, value)
 
@@ -68,7 +68,7 @@ class Curd:
             return await self.soft_delete(id)
 
     async def soft_delete(self, id: int):
-        target = await self.findById(id)
+        target = await self.find_by_id(id)
         setattr(target, "deleted_at", datetime.now())
         self.session.add(target)
         await self.session.commit()
@@ -76,7 +76,11 @@ class Curd:
         return id
 
     async def hard_delete(self, id: int):
-        target = await self.findById(id)
+        target = await self.find_by_id(id)
         await self.session.delete(target)
         await self.session.commit()
         return id
+
+    async def find_one(self, where: dict = {}):
+        result = await self.session.exec(self.build_query_where(where).limit(1))
+        return result.one_or_none()

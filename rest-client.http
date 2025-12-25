@@ -9,6 +9,33 @@
 GET {{host}} HTTP/1.1
 
 
+### register
+
+POST {{host}}{{api_prefix}}/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "account": "{{$randomInt}}@example.com",
+  "password": "d41d8cd98f00b204e9800998ecf8427e"
+}
+
+
+### LOGIN_REQ
+
+POST {{host}}{{api_prefix}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "account": "1311284@example.com",
+  "password": "d41d8cd98f00b204e9800998ecf8427e"
+}
+
+
+### refresh-access-token
+
+GET {{host}}{{api_prefix}}/refresh_access_token?refreshToken={{LOGIN_REQ.response.body.$.data.refreshToken}} HTTP/1.1
+
+
 ### ListArticles
 
 GET {{host}}{{api_prefix}}/articles?page=6 HTTP/1.1
@@ -37,5 +64,8 @@ Content-Type: application/json
 
 
 ### DeleteArticles
+
+
+### 
 
 DELETE {{host}}{{api_prefix}}/articles/51 HTTP/1.1
