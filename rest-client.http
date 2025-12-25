@@ -9,6 +9,18 @@
 GET {{host}} HTTP/1.1
 
 
-### Articles
+### ListArticles
 
 GET {{host}}{{api_prefix}}/articles HTTP/1.1
+
+
+### CreateArticles
+
+POST {{host}}{{api_prefix}}/articles HTTP/1.1
+Content-Type: application/json
+
+{
+  "author_id": 1,
+  "content": "article1 content",
+  "title": "article1"
+}

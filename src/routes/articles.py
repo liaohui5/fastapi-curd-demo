@@ -18,8 +18,9 @@ async def list_articles(
 
 
 @api_v1.post("/articles")
-async def create_article(create_article_form: CreateArticleSchema):
-    pass
+async def create_article(article: ArticleModel):
+    result = await Curd(ArticleModel).create(article)
+    return ResponseFmt.success(result)
 
 
 @api_v1.patch("/articles/{id}")
