@@ -27,16 +27,16 @@ class Config:
     REFRESH_TOKEN_SECRET = None
 
     # database
-    DB_URL = "sqlite+aiosqlite:///database.db"
+    DB_URL = None
 
     @staticmethod
-    def load_config(config_file_path: str):
-        # use https://www.dynaconf.com/
-        pass
+    def load_env(env: dict):
+        for key, value in env.items():
+            setattr(Config, key, value)
 
     @staticmethod
     def get_app_port() -> int:
-        return parse_int(Config.APP_PORT, 5000)
+        return parse_int(Config.APP_PORT, 8000)
 
     @staticmethod
     def is_cors_mode() -> bool:

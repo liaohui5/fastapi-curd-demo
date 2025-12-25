@@ -608,6 +608,7 @@ dependencies = [
     { name = "fastapi" },
     { name = "fastapi-cli" },
     { name = "pyjwt" },
+    { name = "python-dotenv" },
     { name = "sqlmodel" },
 ]
 
@@ -619,6 +620,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.127.0" },
     { name = "fastapi-cli", specifier = ">=0.0.20" },
     { name = "pyjwt", specifier = ">=2.10.1" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "sqlmodel", specifier = ">=0.0.29" },
 ]
 

@@ -11,5 +11,6 @@ dependencies = [
     "fastapi>=0.127.0",
     "fastapi-cli>=0.0.20",
     "pyjwt>=2.10.1",
+    "python-dotenv>=1.2.1",
     "sqlmodel>=0.0.29",
 ]

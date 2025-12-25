@@ -1,20 +1,10 @@
 import sys
-from pathlib import Path
 import random
-from datetime import datetime
-from sqlmodel import create_engine, Session
+from pathlib import Path
 
 sys.path.append(str(Path(__file__)))
 
-from src.models import UserModel, ArticleModel
-
-
-engine = create_engine("sqlite:///database.db", echo=True)
-
-
-def create_session():
-    return Session(bind=engine)
-
+from src.models import UserModel, ArticleModel, create_async_session
 
 users_total = 5
 articles_total = 50
@@ -49,7 +39,17 @@ def create_articles():
     return article_list
 
 
-with create_session() as session:
-    session.add_all(create_users())
-    session.add_all(create_articles())
-    session.commit()
+session = create_async_session()
+
+
+async def main():
+    async with session:
+        session.add_all(create_users())
+        session.add_all(create_articles())
+        await session.commit()
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())
